@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Danzx Official — Panel Pterodactyl Private</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #050814;
+    --bg2:       #0b1126;
+    --bg3:       #101730;
+    --cyan:      #00E5FF;
+    --cyan2:     #00B8D4;
+    --purple:    #7C3AED;
+    --purple2:   #A78BFA;
+    --green:     #00FF88;
+    --text:      #F1F5F9;
+    --muted:     #64748B;
+    --border:    rgba(0, 229, 255, 0.12);
+    --glow:      0 0 25px rgba(0, 229, 255, 0.35);
+    --glow-p:    0 0 25px rgba(124, 58, 237, 0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── LOADING WELCOME SCREEN ─── */
+  #loading-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg); z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .loader-logo {
+    font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 2.5rem;
+    color: var(--cyan); letter-spacing: 4px; text-shadow: var(--glow);
+    margin-bottom: 8px; animation: pulse 1.5s infinite alternate;
+  }
+  .loader-logo span { color: var(--purple); }
+  .loader-welcome {
+    font-size: 0.85rem; color: var(--purple2); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 30px; font-weight: 600;
+  }
+  .loader-bar-container {
+    width: 240px; height: 4px; background: rgba(255,255,255,0.05);
+    border-radius: 10px; overflow: hidden; position: relative;
+  }
+  .loader-bar {
+    width: 0%; height: 100%;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    box-shadow: var(--glow); border-radius: 10px;
+    animation: loadProgress 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes loadProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  #particles {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.35;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(5, 8, 20, 0.75);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 1.3rem;
+    color: var(--cyan); letter-spacing: 2px;
+    text-shadow: var(--glow);
+  }
+  .nav-logo span { color: var(--purple); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    color: #94A3B8; text-decoration: none;
+    font-size: 0.88rem; letter-spacing: 1px; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  
+  .nav-badges-group { display: flex; gap: 12px; }
+  .nav-badge-wa, .nav-badge-tele {
+    color: #fff; font-size: 0.8rem; font-weight: 600;
+    padding: 10px 20px; border-radius: 30px; text-decoration: none;
+    transition: all .2s; display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .nav-badge-wa { background: #25D366; }
+  .nav-badge-tele { background: #0088cc; }
+  .nav-badge-wa:hover, .nav-badge-tele:hover { opacity: .9; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 140px 24px 80px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0, 229, 255, 0.06);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    border-radius: 30px; padding: 8px 20px;
+    font-size: 0.8rem; letter-spacing: 2px;
+    color: var(--cyan); text-transform: uppercase; font-weight: 600;
+    margin-bottom: 28px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 10px var(--green);
+    animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+
+  .hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.8rem);
+    font-weight: 900; line-height: 1.15;
+    letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .hero h1 .line1 { display: block; color: var(--text); }
+  .hero h1 .line2 {
+    display: block;
+    background: linear-gradient(90deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: #94A3B8;
+    max-width: 580px; margin: 20px auto 44px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    color: #fff; font-weight: 700; font-size: 0.95rem;
+    padding: 16px 36px; border-radius: 12px;
+    text-decoration: none; letter-spacing: 0.5px;
+    box-shadow: var(--glow); transition: all .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 35px rgba(0, 229, 255, 0.5); }
+
+  .hero-stats { display: flex; gap: 60px; margin-top: 80px; justify-content: center; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--cyan); text-shadow: var(--glow); }
+  .stat-label { font-size: 0.8rem; color: #64748B; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px; font-weight: 500; }
+
+  /* ─── SECTION COMMON ─── */
+  section { position: relative; z-index: 1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .section-header { text-align: center; margin-bottom: 60px; }
+  .section-eyebrow { font-size: 0.8rem; letter-spacing: 4px; color: var(--cyan); text-transform: uppercase; margin-bottom: 16px; font-weight: 600; }
+  .section-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: var(--text); letter-spacing: 1px; }
+  .section-title span { background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* ─── PRICING ─── */
+  .pricing { padding: 100px 0; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .pricing-note { text-align: center; margin-bottom: 40px; color: #94A3B8; font-size: 0.9rem; }
+  .pricing-note strong { color: var(--cyan); }
+  
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+  }
+  
+  .price-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 26px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .price-card:hover {
+    border-color: var(--cyan);
+    box-shadow: var(--glow);
+    transform: translateY(-6px);
+  }
+  .price-card.popular {
+    border-color: var(--purple);
+    box-shadow: var(--glow-p);
+  }
+  .price-card.popular::after {
+    content: '🔥 REKOMENDASI';
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--purple), var(--cyan2));
+    color: #fff; font-size: 0.65rem; font-weight: 800;
+    padding: 5px 16px; border-radius: 30px; letter-spacing: 1.5px;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+  }
+
+  .price-ram {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem; font-weight: 900;
+    color: var(--cyan); text-shadow: var(--glow);
+    text-align: center; margin-bottom: 2px;
+  }
+  .price-ram-label { font-size: 0.75rem; color: #64748B; text-align: center; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; font-weight: 600; }
+  
+  .price-features-list {
+    list-style: none; padding: 0; margin-bottom: 28px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .price-features-list li {
+    font-size: 0.85rem; color: #CBD5E1;
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.5;
+  }
+  .price-features-list li span {
+    color: var(--green); font-weight: bold; font-size: 1rem; shrink: 0;
+  }
+
+  .price-meta-box { margin-top: auto; text-align: center; }
+  .price-amount { font-family: 'Orbitron', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--text); }
+  .price-amount span { font-size: 0.95rem; color: #64748B; font-family: 'Inter', sans-serif; font-weight: 400; }
+  .price-duration { font-size: 0.75rem; color: #64748B; margin-top: 4px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .price-cta {
+    display: block; width: 100%;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--cyan); font-size: 0.85rem; font-weight: 700;
+    padding: 14px 0; border-radius: 10px;
+    text-decoration: none; letter-spacing: 1px; text-align: center;
+    transition: all .2s; cursor: pointer; outline: none;
+  }
+  .price-card:hover .price-cta, .price-card.popular .price-cta {
+    background: rgba(0, 229, 255, 0.06); border-color: var(--cyan);
+  }
+
+  .reseller-center-container { display: flex; justify-content: center; margin-top: 30px; }
+
+  /* ─── CONTACT / ORDER ─── */
+  .contact { padding: 100px 0; }
+  .contact-grid { max-width: 650px; margin: 0 auto; }
+  .contact-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+  .contact-box-wa, .contact-box-tele { text-decoration: none; color: var(--text); text-align: center; display: block; border-radius: 14px; padding: 20px; transition: all .3s; }
+  .contact-box-wa { background: rgba(37,211,102,0.04); border: 1px solid rgba(37,211,102,0.2); }
+  .contact-box-tele { background: rgba(0,136,204,0.04); border: 1px solid rgba(0,136,204,0.2); }
+  .contact-box-wa:hover { border-color: #25D366; box-shadow: 0 0 20px rgba(37,211,102,0.3); transform: translateY(-2px); }
+  .contact-box-tele:hover { border-color: #0088cc; box-shadow: 0 0 20px rgba(0,136,204,0.3); transform: translateY(-2px); }
+  .contact-box-icon { font-size: 2rem; margin-bottom: 8px; }
+  .contact-box-lbl { font-size: 0.75rem; color: #64748B; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+  .contact-box-val { font-size: 1rem; font-weight: 700; margin-top: 4px; }
+  .contact-box-wa .contact-box-val { color: #25D366; }
+  .contact-box-tele .contact-box-val { color: #0088cc; }
+
+  .channel-links h4 { font-size: 0.8rem; color: #64748B; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; text-align: center; font-weight: 600; }
+  .channel-btn { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; margin-bottom: 12px; text-decoration: none; color: var(--text); font-size: 0.9rem; transition: all .2s; }
+  .channel-btn:hover { border-color: var(--purple); background: rgba(124,58,237,0.08); color: var(--purple2); transform: translateX(4px); }
+
+  /* ─── MODAL CHECKOUT SYSTEM (NO FILE UPLOAD) ─── */
+  .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(4, 6, 16, 0.92); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-content { background: var(--bg2); border: 1px solid var(--purple); box-shadow: var(--glow-p); border-radius: 20px; width: 100%; max-width: 440px; padding: 36px 28px; position: relative; max-height: 90vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 18px; right: 22px; background: transparent; border: none; color: #64748B; font-size: 1.8rem; cursor: pointer; transition: color .2s; }
+  .modal-close:hover { color: var(--cyan); }
+  .modal-step-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 20px; text-transform: uppercase; text-align: center; letter-spacing: 0.5px; }
+  .modal-step-title span { color: var(--cyan); }
+  .modal-qris-display { max-width: 210px; width: 100%; border-radius: 14px; border: 2px solid var(--border); box-shadow: var(--glow); display: block; margin: 16px auto; }
+  .modal-summary { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin: 20px 0; font-size: 0.88rem; }
+  .modal-summary div { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .modal-summary div:last-child { margin-bottom: 0; }
+  .summary-v { font-weight: 700; color: var(--cyan); }
+  .modal-input-group { margin-bottom: 20px; }
+  .modal-label { display: block; font-size: 0.75rem; color: #64748B; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; letter-spacing: 1px; }
+  .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 14px; font-size: 0.92rem; border-radius: 8px; outline: none; transition: border-color .2s; }
+  .modal-input:focus { border-color: var(--cyan); }
+  .modal-btn-next { width: 100%; background: linear-gradient(135deg, var(--cyan2), var(--purple)); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 14px 0; border: none; border-radius: 8px; cursor: pointer; box-shadow: var(--glow); margin-top: 10px; transition: all .2s; letter-spacing: 0.5px; }
+  .modal-btn-next:hover { opacity: 0.95; transform: translateY(-1px); }
+  .final-channels { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+  .btn-final-wa, .btn-final-tele { color: #fff; text-decoration: none; font-weight: 700; font-size: 0.92rem; padding: 14px 0; border-radius: 8px; display: block; text-align: center; transition: opacity .2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .btn-final-wa { background: #25D366; }
+  .btn-final-tele { background: #0088cc; }
+  .btn-final-wa:hover, .btn-final-tele:hover { opacity: 0.9; }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--bg); border-top: 1px solid var(--border); text-align: center; padding: 48px 24px; font-size: 0.85rem; color: #64748B; }
+  footer strong { color: var(--cyan); font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+  
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+  @media(max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .contact-buttons-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- WELCOME SCREEN LOADING -->
+<div id="loading-screen">
+  <div class="loader-logo">DANZX<span>.</span>OFFICIAL</div>
+  <div class="loader-welcome">Welcome to Premium Shop</div>
+  <div class="loader-bar-container">
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SHOP<span> </span>DANZX</div>
+  <div class="nav-links">
+    <a href="#produk">Produk Paket</a>
+    <a href="#reseller">Join Reseller</a>
+    <a href="#order">Kontak</a>
+  </div>
+  <div class="nav-badges-group">
+    <a class="nav-badge-wa" href="https://wa.me/6283849480456" target="_blank">WhatsApp</a>
+    <a class="nav-badge-tele" href="https://t.me/Danzx_JBR" target="_blank">Telegram</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Server Online 24/7 Aktif</div>
+  <h1>
+    <span class="line1">Panel Pterodactyl</span>
+    <span class="line2">Private Premium</span>
+  </h1>
+  <p class="hero-sub">Hosting game & bot Anda dengan panel private bertenaga tinggi — RAM terdedikasi, harga terjangkau, uptime terjamin.</p>
+  <div class="hero-cta">
+    <a class="btn-primary" href="#produk">🚀 Lihat Paket</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">CPU Cores</div></div>
+    <div class="stat"><div class="stat-num">32GB</div><div class="stat-label">Total RAM</div></div>
+    <div class="stat"><div class="stat-num">30</div><div class="stat-label">Hari Aktif</div></div>
+  </div>
+</section>
+
+<!-- PRICING PACKAGES -->
+<section class="pricing" id="produk">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Daftar Harga</div>
+      <h2 class="section-title">Pilih <span>Paket RAM Panel</span></h2>
+    </div>
+    <div class="pricing-note">Semua paket aktif <strong>30 hari</strong> · Private Server · 8 CPU Cores</div>
+    
+    <div class="pricing-grid">
+      <!-- Paket 2GB -->
+      <div class="price-card">
+        <div class="price-ram">2 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Penyimpanan Server Aman</li>
+          <li><span>✓</span> Egg Node.js</li>
+          <li><span>✓</span> Support Bot WhatsApp & Telegram</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 3<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('2 GB RAM Panel', 'Rp 3.000')">ORDER</button>
+        </div>
+      </div>
+
+      <!-- Paket 3GB -->
+      <div class="price-card">
+        <div class="price-ram">3 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Penyimpanan Server Aman</li>
+          <li><span>✓</span> Egg Node.js</li>
+          <li><span>✓</span> Support Bot WhatsApp & Telegram</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 4<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('3 GB RAM Panel', 'Rp 4.000')">ORDER</button>
+        </div>
+      </div>
+
+      <!-- Paket 5GB -->
+      <div class="price-card popular">
+        <div class="price-ram">5 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Performa Lebih Stabil & Responsif</li>
+          <li><span>✓</span> Support Bot WhatsApp & Telegram</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 6<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('5 GB RAM Panel', 'Rp 6.000')">ORDER</button>
+        </div>
+      </div>
+      
+      <!-- Paket 6GB -->
+      <div class="price-card">
+        <div class="price-ram">6 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Performa Lebih Stabil & Responsif</li>
+          <li><span>✓</span> Support Bot WhatsApp & Telegram</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 7<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('6 GB RAM Panel', 'Rp 7.000')">ORDER</button>
+        </div>
+      </div>
+      
+      <!-- Paket 7GB -->
+      <div class="price-card">
+        <div class="price-ram">7 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Performa Lebih Stabil & Responsif</li>
+          <li><span>✓</span> Support Bot WhatsApp & Telegram</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 8<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('7 GB RAM Panel', 'Rp 8.000')">ORDER</button>
+        </div>
+      </div>
+
+      <!-- Paket 8GB -->
+      <div class="price-card">
+        <div class="price-ram">8 GB</div>
+        <div class="price-ram-label">RAM PANEL</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Kapasitas RAM Luas & Longgar</li>
+          <li><span>✓</span> Performa Anti Lag / Delay</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 9<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" onclick="startCheckout('8 GB RAM Panel', 'Rp 9.000')">ORDER</button>
+        </div>
+      </div>
+
+      <!-- Paket UNLIMITED -->
+      <div class="price-card" style="border-color: var(--green);">
+        <div class="price-ram" style="color: var(--green);">∞</div>
+        <div class="price-ram-label">UNLIMITED RAM</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> 32 Ram 8 Core CPU</li>
+          <li><span>✓</span> Kekuatan Server Maksimal</li>
+          <li><span>✓</span> Sangat Cocok untuk bot auto order</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 12<span>.000</span></div>
+          <div class="price-duration">/ 30 hari</div>
+          <button class="price-cta" style="color: var(--green);" onclick="startCheckout('Unlimited RAM Panel', 'Rp 12.000')">ORDER</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEKTOR TUNGGAL: JOIN RESELLER -->
+    <div class="section-header" id="reseller" style="margin-top: 100px; margin-bottom: 20px;">
+      <div class="section-eyebrow">Program Kemitraan</div>
+      <h2 class="section-title">Layanan <span>Reseller Panel</span></h2>
+    </div>
+    
+    <div class="reseller-center-container">
+      <div class="price-card popular" style="max-width: 340px; width: 100%;">
+        <div class="price-ram">RESELLER</div>
+        <div class="price-ram-label">Akses Kemitraan</div>
+        <ul class="price-features-list">
+          <li><span>✓</span> Create panel via bot Telegram</li>
+          <li><span>✓</span> PTPT 10k perbulan</li>
+          <li><span>✓</span> Akses Fitur Reseller</li>
+        </ul>
+        <div class="price-meta-box">
+          <div class="price-amount">Rp 25<span>.000</span></div>
+          <div class="price-duration">/ harga join aja</div>
+          <button class="price-cta" onclick="startCheckout('Join Akses Reseller Panel', 'Rp 25.000')">ORDER NOW</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="order">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow">Hubungi Kami</div>
+      <h2 class="section-title">Admin <span>Danzx Official</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-buttons-row">
+          <a class="contact-box-wa" href="https://wa.me/6283849480456" target="_blank">
+            <div class="contact-box-icon">💬</div>
+            <div class="contact-box-lbl">WhatsApp</div>
+            <div class="contact-box-val">6283849480456</div>
+          </a>
+          <a class="contact-box-tele" href="https://t.me/Danzx_JBR" target="_blank">
+            <div class="contact-box-icon">✈️</div>
+            <div class="contact-box-lbl">Telegram</div>
+            <div class="contact-box-val">@Danzx_JBR</div>
+          </a>
+        </div>
+        <div class="channel-links">
+          <h4>📢 Channel Komunitas</h4>
+          <a class="channel-btn" href="https://whatsapp.com/channel/0029VbCTqG7Fsn0fJzxg1B1H" target="_blank">🏠 Channel Utama</a>
+          <a class="channel-btn" href="https://whatsapp.com/channel/0029VbCCZmt4SpkIviNn811E" target="_blank">ℹ️ Channel Informasi</a>
+          <a class="channel-btn" href="https://whatsapp.com/channel/0029VbBSKdh8aKvShLrENh11" target="_blank">⭐ Channel Testimoni</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPUP MODAL CHECKOUT -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeCheckout()">&times;</button>
+    
+    <!-- TAHAP 1: SCAN QRIS -->
+    <div id="modalStep1">
+      <div class="modal-step-title">1. Scan <span>QRIS Pembayaran</span></div>
+      <p style="font-size: 0.78rem; color: #94A3B8; text-align: center; margin-bottom: 10px;">
+        Silakan scan QRIS dengan nominal pembayaran: <strong id="step1PriceText" style="color:var(--cyan)">-</strong>
+      </p>
+      <img class="modal-qris-display" src="https://files.catbox.moe/tyr08u.jpg" alt="QRIS">
+      <div class="modal-summary">
+        <div><span>Produk:</span><span class="summary-v" id="step1ProductText">-</span></div>
+      </div>
+      <button class="modal-btn-next" onclick="goToStep2()">Saya Sudah Transfer</button>
+    </div>
+
+    <!-- TAHAP 2: DETAIL DATA (RINGKAS TANPA UPLOAD FILE) -->
+    <div id="modalStep2" style="display: none;">
+      <div class="modal-step-title">2. Pembuatan <span>Akun</span></div>
+      <div class="modal-input-group">
+        <label class="modal-label">Nama Pembeli</label>
+        <input type="text" id="buyerName" placeholder="Nama Anda" class="modal-input">
+      </div>
+      <div class="modal-input-group">
+        <label class="modal-label">Request Username Panel</label>
+        <input type="text" id="panelUser" placeholder="Contoh: danzx_user" class="modal-input">
+      </div>
+      <button class="modal-btn-next" onclick="goToStep3()">Konfirmasi & Lanjutkan</button>
+    </div>
+
+    <!-- TAHAP 3: FINISH -->
+    <div id="modalStep3" style="display: none; text-align: center;">
+      <div class="modal-step-title">3. Kirim <span>ke Admin</span></div>
+      <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 24px;">Data transaksi siap dikirim! Klik salah satu tombol di bawah untuk mengirim data langsung ke admin:</p>
+      <div class="final-channels">
+        <a href="#" id="finalWaLink" target="_blank" class="btn-final-wa">💬 Kirim via WhatsApp</a>
+        <a href="#" id="finalTeleLink" target="_blank" class="btn-final-tele">✈️ Kirim via Telegram</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>DANZX OFFICIAL</strong></p>
+  <p style="margin-top:16px; opacity:.4">© 2026 Shop Danzx Official. All rights reserved.</p>
+</footer>
+
+<script>
+/* --- GRAPHICS BACKGROUND PARTICLES --- */
+const canvas = document.getElementById('particles'); const ctx = canvas.getContext('2d'); let W, H, particles = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; } resize(); window.addEventListener('resize', resize);
+class Particle {
+  constructor() { this.reset(); }
+  reset() { this.x = Math.random() * W; this.y = Math.random() * H; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; this.r = Math.random() * 1.5 + 0.5; this.alpha = Math.random() * 0.6 + 0.1; this.color = Math.random() > 0.5 ? '0,229,255' : '124,58,237'; }
+  update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset(); }
+  draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fillStyle = `rgba(${this.color},${this.alpha})`; ctx.fill(); }
+}
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+function animate() {
+  ctx.clearRect(0, 0, W, H); particles.forEach(p => { p.update(); p.draw(); });
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const dist = Math.sqrt(Math.pow(particles[i].x - particles[j].x, 2) + Math.pow(particles[i].y - particles[j].y, 2));
+      if (dist < 90) { ctx.beginPath(); ctx.strokeStyle = `rgba(0,229,255,${0.1 * (1 - dist/90)})`; ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* --- HANDLER WELCOME LOADING SCREEN --- */
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loading-screen');
+    loader.style.opacity = '0';
+    setTimeout(() => { loader.style.display = 'none'; }, 600);
+  }, 2200);
+});
+
+/* --- SISTEM MODAL CHECKOUT DATA --- */
+const WA_NUMBER = "6283849480456"; const TELE_USER = "Danzx_JBR";
+let selectedProduct = "", selectedPrice = "";
+
+function startCheckout(product, price) {
+  selectedProduct = product; selectedPrice = price;
+  document.getElementById('step1ProductText').innerText = product;
+  document.getElementById('step1PriceText').innerText = price;
+  document.getElementById('checkoutModal').style.display = 'flex';
+  document.getElementById('modalStep1').style.display = 'block';
+  document.getElementById('modalStep2').style.display = 'none';
+  document.getElementById('modalStep3').style.display = 'none';
+}
+function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
+function goToStep2() { document.getElementById('modalStep1').style.display = 'none'; document.getElementById('modalStep2').style.display = 'block'; }
+function goToStep3() {
+  const name = document.getElementById('buyerName').value.trim(); const user = document.getElementById('panelUser').value.trim();
+  if(!name || !user) { alert("Data Nama Pembeli dan Request Username tidak boleh kosong!"); return; }
+  const textMsg = `Halo Admin Danzx Official, saya ingin konfirmasi transaksi.%0A%0A*Detail Pesanan:*%0A▪️ Layanan: ${selectedProduct}%0A▪️ Nominal Transfer: ${selectedPrice}%0A▪️ Nama Pelanggan: ${name}%0A▪️ Request Username Panel: ${user}%0A%0ASudah saya bayar via QRIS, tolong segera diproses ya min!`;
+  document.getElementById('finalWaLink').href = `https://wa.me/${WA_NUMBER}?text=${textMsg}`;
+  document.getElementById('finalTeleLink').href = `https://t.me/${TELE_USER}?text=${textMsg}`;
+  document.getElementById('modalStep2').style.display = 'none'; document.getElementById('modalStep3').style.display = 'block';
+}
+</script>
+</body>
+</html>
