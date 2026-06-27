@@ -207,7 +207,7 @@
   function startStatusPooling() {
     pollInterval = setInterval(async () => {
       try {
-        const res = await fetch(`https://www.panel-legaldanzx.my.id:3000/api/check-status/${activeInvId}`);
+        const res = await fetch(`http://www.panel-legaldanzx.my.id:3000/api/check-status/${activeInvId}`);
         const data = await res.json();
         
         if(data.success && data.status === 'paid') {
