@@ -1,0 +1,38 @@
+async function goToStep2() {
+  const name = document.getElementById('buyerName').value.trim();
+  const user = document.getElementById('panelUser').value.trim();
+  if(!name) { alert("Mohon isi Nama Pembeli!"); return; }
+
+  const btnNext = document.querySelector('#modalStep2 .modal-btn-next');
+  btnNext.innerText = "SEDANG GENERATE QRIS...";
+  btnNext.disabled = true;
+
+  try {
+      // 🔴 GANTI "http://IP-PANEL-KAMU:3000" dengan alamat IP atau Domain Server Panel Pterodactyl kamu!
+      const res = await fetch('http://IP-PANEL-KAMU:3000/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              nama: name,
+              username: user || "Premium_User",
+              paket: selectedProduct,
+              harga: selectedPrice
+          })
+      });
+      const data = await res.json();
+
+      if(data.success) {
+          currentInvoiceId = data.invoice_id;
+          document.querySelector('.modal-qris-display').src = data.qris_url;
+          document.getElementById('modalStep2').style.display = 'none';
+          document.getElementById('modalStep1').style.display = 'block';
+      } else {
+          alert("Gagal: " + data.message);
+      }
+  } catch (error) {
+      alert("Gagal menghubungi server backend di panel.");
+  } finally {
+      btnNext.innerText = "Konfirmasi Transaksi";
+      btnNext.disabled = false;
+  }
+}
